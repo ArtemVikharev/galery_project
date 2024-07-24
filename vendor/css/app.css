@@ -1,0 +1,7 @@
+.debug {
+    position: absolute;
+    width: 100%;
+    min-height: 100%;
+    z-index: 1111;
+    background-color: #fff;
+}

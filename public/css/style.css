@@ -1,0 +1,16 @@
+.register_title{
+    text-align: center;
+}
+
+.register_form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register_form label{
+    display: flex;
+    width: 350px;
+    justify-content: space-between;
+    padding: 2px;
+}

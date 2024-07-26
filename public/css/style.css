@@ -1,3 +1,6 @@
+p{
+    margin: 0;
+}
 .register_title{
     text-align: center;
 }
@@ -13,4 +16,8 @@
     width: 350px;
     justify-content: space-between;
     padding: 2px;
+}
+
+.error_msg{
+    color: #f00;
 }

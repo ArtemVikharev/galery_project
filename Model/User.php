@@ -4,15 +4,15 @@ require_once "vendor/DB.php";
 
 
 class User{
-    private $firstname = null;
-    private $surename = null;
-    private $username = null;
-    private $email = null;
-    private $password = null;
-    private $hash = null;
+    protected $firstname = null;
+    protected $surename = null;
+    protected $username = null;
+    protected $email = null;
+    protected $password = null;
+    protected $hash = null;
     protected $db = null;
 
-    public function __construct($firstname, $surename, $password, $username, $email){
+    public function __construct($firstname, $surename,  $username, $email, $password,){
         $this->firstname = $firstname;
         $this->surename = $surename;
         $this->username = $username;

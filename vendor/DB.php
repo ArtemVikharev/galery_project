@@ -22,14 +22,11 @@
             
             if($responseData){
                 $data = [];
-
                 while($row = $result->fetch_array(MYSQLI_ASSOC)){
                     $data[] = $row;
                 }   
-            
-            }
-
             return $data;
+            }
         }
 
     }

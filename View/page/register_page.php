@@ -60,8 +60,8 @@
         ?></p>
         <button>Зарегистрироваться</button>
     </form>
-</div>
 
+        
 
 <?php
 function writeStatus($nameField){

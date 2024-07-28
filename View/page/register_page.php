@@ -42,7 +42,7 @@
         ?></p>
         <label for=""> Введите Пароль
             <input type="text" name="user_password">
-    </label>    
+        </label>    
         <p class =<?php echo (writeStatus("user_password") != false)? "error_msg": ""; ?>>
         <?php
             if(writeStatus("user_password")){

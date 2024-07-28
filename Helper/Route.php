@@ -1,5 +1,6 @@
 <?php
 
+
 class Route
 {
     static function splitURL()

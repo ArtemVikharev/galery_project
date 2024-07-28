@@ -2,6 +2,17 @@
 <div>
     <h2>Главная страница</h2>
     <a href="?route=main/register">Зарегистрироватся</a>
+    <div>
+        <form class=auth>
+            <label for=""> Имя пользователя
+                <input type="text" name="username">
+            </label>
+            <label for=""> Пароль
+                <input type="text" name="password">
+            </label>
+            <button>Войти</button>
+        </form>  
+    </div>
 </div>
 <div>
     <form class="image_list" method="POST" action="?route=main/addimage" enctype="multipart/form-data">

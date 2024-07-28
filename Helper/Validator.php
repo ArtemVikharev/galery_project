@@ -90,13 +90,13 @@ class Validator{
 
     private static function checkUserNameDB($username){
         $db = new DB();
-        $result = $db->querySelect("SELECT username FROM user WHERE `username` = '".$username."'");
+        $result = $db->query("SELECT username FROM user WHERE `username` = '".$username."'");
         return $result;
     }
 
     private static function checkUserEmailDB($email){
         $db = new DB();
-        $result = $db->querySelect("SELECT email FROM user WHERE email = '".$email."'");
+        $result = $db->query("SELECT email FROM user WHERE email = '".$email."'");
         return $result;
     }   
 }

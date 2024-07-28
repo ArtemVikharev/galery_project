@@ -21,3 +21,16 @@ p{
 .error_msg{
     color: #f00;
 }
+
+.image_block{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.image_block img{
+    padding: 10px;
+    width: 300px;
+}

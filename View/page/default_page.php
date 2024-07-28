@@ -30,7 +30,14 @@
         <button>Загрузить изображение</button>
     </form>
 </div>
-
+<div class="image_block">
+    <?php foreach ($data as $item) : ?>
+        <a href=<?php echo "?route=main/itemImage&id=".$item['id'].""?>>
+            <img src=<?php echo $item['path']?> alt="">
+        </a>
+        
+    <?php endforeach; ?>
+</div>
 <?php
 function writeStatus($nameField){
 	if(isset($_GET['status'])){

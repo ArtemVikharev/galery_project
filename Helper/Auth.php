@@ -9,10 +9,11 @@ class Auth{
             $password = $_POST['password'];
 
             $queryResult = $db-> query("SELECT * FROM user WHERE username='".$login."'");
-            
             if (count($queryResult) == 1){
+                echo 1;
                 $result = $queryResult[0];
-                if (md5($password) == $result['password']){
+
+                if (password_verify($password, $result['password'])){
                     setcookie ("login", $result['username'], time() + 360000);                         
                     setcookie ("password", md5($result['username'].$result['password']), time() + 360000);                    
                     $_SESSION['id'] = $result['id'];  

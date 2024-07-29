@@ -1,7 +1,6 @@
 
 <div>
     <h2>Главная страница</h2>
-    <a href="?route=main/register">Зарегистрироватся</a>
 </div>
 <div>
     <form class="image_list" method="POST" action="?route=main/addimage" enctype="multipart/form-data">
@@ -38,20 +37,3 @@
         
     <?php endforeach; ?>
 </div>
-<?php
-function writeStatus($nameField){
-	if(isset($_GET['status'])){
-
-		$data = $_GET['status'];
-
-		$data = json_decode($data);
-
-		$error = (array)$data[0];
-		
-		if(isset($error[$nameField])){
-			return $error[$nameField];
-		}
-	}
-    
-	return false;
-}

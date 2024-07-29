@@ -41,7 +41,7 @@
             }
         ?></p>
         <label for=""> Введите Пароль
-            <input type="text" name="user_password">
+            <input type="password" name="user_password">
         </label>    
         <p class =<?php echo (writeStatus("user_password") != false)? "error_msg": ""; ?>>
         <?php
@@ -50,7 +50,7 @@
             }
         ?></p>
         <label for=""> Подтвердите пароль
-            <input type="text" name="user_repassword">
+            <input type="password" name="user_repassword">
         </label>
         <p class =<?php echo (writeStatus("user_repassword") != false)? "error_msg": ""; ?>>
         <?php
@@ -60,40 +60,3 @@
         ?></p>
         <button>Зарегистрироваться</button>
     </form>
-
-        
-
-<?php
-function writeStatus($nameField){
-	if(isset($_GET['status'])){
-
-		$data = $_GET['status'];
-
-		$data = json_decode($data);
-
-		$error = (array)$data[0];
-		
-		if(isset($error[$nameField])){
-			return $error[$nameField];
-		}
-	}
-    
-	return false;
-}
-
-function setValue($nameField){
-    if(isset($_GET['status'])){
-
-        $data = $_GET['status'];
-
-        $data = json_decode($data);
-
-        $value = (array)$data[1];
-        
-        if(isset($value[$nameField])){
-            return $value[$nameField];
-        }
-    }
-    return false;
-}
-?>

@@ -16,7 +16,7 @@ class User{
         $this->surename = $surename;
         $this->username = $username;
         $this->email = $email;
-        $this->password = md5($password);
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
     
     public function registerUser(){

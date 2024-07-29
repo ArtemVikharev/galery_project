@@ -1,10 +1,8 @@
 <?php
-
 require_once "Model/UserModel.php";
 require_once "Model/ImageModel.php";
 require_once "View/View.php";
-
-
+require_once "Helper/Auth.php";
 
 class MainController{
 
@@ -17,6 +15,7 @@ class MainController{
 
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/error");
         }
+        
         View::render(["page_view" => "default", "layout" => "default", "data" => $data]);
     }
 
@@ -38,6 +37,22 @@ class MainController{
         $newUser->registerUser();
         header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");   
     }
+
+    public function authAction(){
+        if($_GET['action'] == "out"){
+            Auth::out();
+        } 
+        if(isset($_POST['log_in'])){ 
+            $authErrors = Auth::enter();
+            if (count($authErrors) == 0){   
+                $UID = $_SESSION['id'];
+                header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
+            }
+            if($authErrors){
+                header("location: ?route=main/index&status=".json_encode([$authErrors]));
+            }
+        }
+    }
     
     public function addimageAction(){
         $errors = CheckImage::checkImage($_FILES['userfile']);
@@ -56,8 +71,6 @@ class MainController{
         $model = new ImageModel();
 
         $data = $model->getOneImage($_GET["id"]);
-
-        // Debug::dd($data);
 
         View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
         $model->increseViewCount($_GET["id"]);

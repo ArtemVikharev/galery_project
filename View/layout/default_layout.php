@@ -1,6 +1,7 @@
 <?php if (Auth::login()){   
-        $UID = $_SESSION['id']; 
+        $UID = $_SESSION['id'];
     }
+    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +14,9 @@
 </head>
 <body>
     <header>
-        <div><?php if(!isset($UID)){?>
+        <div>
+            <a href="?route=main/index">Главная страница</a>
+            <?php if(!isset($UID)){?>
             <a href="?route=main/register">Зарегистрироватся</a>
             <?}
                     ?> 
@@ -37,6 +40,7 @@
                     ?>  
                 </form>
                 <?php if(isset($UID)){?>
+                <a href="/?route=main/personalPage"> Мои коллекции</a>
                 <a href="/?route=main/auth&action=out">Выход</a>
                 <?}?>
             </div> 

@@ -1,6 +1,7 @@
 <?php
 require_once "Model/UserModel.php";
 require_once "Model/ImageModel.php";
+require_once "Model/CollectionModel.php";
 require_once "View/View.php";
 require_once "Helper/Auth.php";
 
@@ -15,7 +16,6 @@ class MainController{
 
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/error");
         }
-        
         View::render(["page_view" => "default", "layout" => "default", "data" => $data]);
     }
 
@@ -54,7 +54,7 @@ class MainController{
         }
     }
     
-    public function addimageAction(){
+    public function addImageAction(){
         $errors = CheckImage::checkImage($_FILES['userfile']);
         if($_FILES['userfile']['error']==4){
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
@@ -68,12 +68,34 @@ class MainController{
         header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
     }
     public function itemImageAction(){
+        Auth::login();
         $model = new ImageModel();
-
         $data = $model->getOneImage($_GET["id"]);
-
         View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
         $model->increseViewCount($_GET["id"]);
+    }
+
+    public function personalPageAction(){
+        if(!Auth::login()){
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
+        }
+        $UID = $_SESSION['id'];
+        $model = new CollectionModel();
+        $data = $model->getPersonalCollection($UID);
+        View::render(["page_view" => "collection", "layout" => "default", "data" => $data]);
+        
+    }
+
+    public function createCollectionAction(){
+        if(Auth::login()){
+            $UID = $_SESSION['id'];
+            CollectionModel::createCollection($_POST["collection_name"], $UID);
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/personalPage");
+        }
+        else{
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");  
+        }
+             
     }
 
     public function errorAction(){

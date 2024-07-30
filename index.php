@@ -7,5 +7,4 @@ require_once "Helper/CheckImage.php";
 require_once "Helper/Upload.php";
 require_once "Helper/Auth.php";
 
-
 Route::splitURL();

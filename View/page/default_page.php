@@ -3,7 +3,7 @@
     <h2>Главная страница</h2>
 </div>
 <div>
-    <form class="image_list" method="POST" action="?route=main/addimage" enctype="multipart/form-data">
+    <form class="image_list" method="POST" action="?route=main/addImage" enctype="multipart/form-data">
         <input type="file" name="userfile">
         <p class =<?php echo (writeStatus("existFile") != false)? "error_msg": ""; ?>>
         <?php
@@ -26,7 +26,7 @@
             }
             
         ?></p>        
-        <button>Загрузить изображение</button>
+        <button>Опубликовать изображение</button>
     </form>
 </div>
 <div class="image_block">

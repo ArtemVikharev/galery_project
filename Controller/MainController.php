@@ -68,11 +68,27 @@ class MainController{
         header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
     }
     public function itemImageAction(){
-        Auth::login();
-        $model = new ImageModel();
-        $data = $model->getOneImage($_GET["id"]);
-        View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
-        $model->increseViewCount($_GET["id"]);
+        if(Auth::login()){
+            $UID = $_SESSION['id'];
+            $imageModel = new ImageModel();
+            $collectionModel = new CollectionModel();
+            $image = $imageModel->getOneImage($_GET["id"]);
+            $collection = $collectionModel->getPersonalCollection($UID);
+            $data = [$image, $collection];
+            View::render(["page_view" => "itemAuth", "layout" => "default", "data" => $data]);
+            $imageModel->increseViewCount($_GET["id"]);
+        }
+        if(!Auth::login()){
+            $model = new ImageModel();
+            $data = $model->getOneImage($_GET["id"]);
+            View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
+            $model->increseViewCount($_GET["id"]);
+        } 
+    }
+
+    public function addInCollectionAction(){
+        ImageModel::addInCollection($_GET['imageId'], $_POST['collectionId']);
+        header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
     }
 
     public function personalPageAction(){
@@ -84,6 +100,14 @@ class MainController{
         $data = $model->getPersonalCollection($UID);
         View::render(["page_view" => "collection", "layout" => "default", "data" => $data]);
         
+    }
+
+    public function collectionAction(){
+        Auth::login();
+        $UID = $_SESSION['id'];
+        $model = new ImageModel();
+        $data = $model->getCollectionImage($UID, $_GET['id']);
+        View::render(["page_view" => "collectionItem", "layout" => "default", "data" => $data]);
     }
 
     public function createCollectionAction(){

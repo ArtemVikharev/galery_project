@@ -31,9 +31,8 @@
 </div>
 <div class="image_block">
     <?php foreach ($data as $item) : ?>
-        <a href=<?php echo "?route=main/itemImage&id=".$item['id'].""?>>
+        <a href=<?php echo "?route=main/itemImage&imageId=".$item['id'].""?>>
             <img src=<?php echo $item['path']?> alt="">
-        </a>
-        
+        </a> 
     <?php endforeach; ?>
 </div>

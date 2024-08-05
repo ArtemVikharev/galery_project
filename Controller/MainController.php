@@ -9,20 +9,15 @@ class MainController{
 
     public function indexAction(){
         $model = new ImageModel();
-
         $data = $model->get();
-
         if (!$data || count($data) == 0) {
-
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/error");
         }
         View::render(["page_view" => "default", "layout" => "default", "data" => $data]);
     }
 
     public function registerAction(){
-
         $data =[];
-
         View::render(["page_view" => "register", "layout" => "default", "data" => $data]);
     }
 
@@ -67,12 +62,39 @@ class MainController{
         Upload::upload_file($_FILES['userfile']);
         header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
     }
+
     public function itemImageAction(){
+            $imageModel = new ImageModel();
+            $image = $imageModel->getOneImage($_GET["imageId"]);
+            if(Auth::login()){
+                $UID = $_SESSION['id'];
+                $collectionModel = new CollectionModel();
+                $collection = $collectionModel->getAllUserCollection($UID);
+                $data = [$image, $collection];
+            }
+            if(!Auth::login()){
+                $data = [$image];
+            }
+            View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
+            $imageModel->increseViewCount($_GET["imageId"]);
+    }
+
+    public function addInCollectionAction(){
         Auth::login();
+        $UID = $_SESSION['id'];
         $model = new ImageModel();
-        $data = $model->getOneImage($_GET["id"]);
-        View::render(["page_view" => "item", "layout" => "default", "data" => $data]);
-        $model->increseViewCount($_GET["id"]);
+        $addErrors = [];
+        if (!$_POST['collectionId']){
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/itemImage&imageId=".$_GET['imageId']);
+        }
+        $checkResult = $model->addInCollection($_GET['imageId'], $_POST['collectionId'], $UID);
+        if ($checkResult){
+            $addErrors['exist'] = $checkResult;
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/itemImage&imageId=".$_GET['imageId']."&status=".json_encode([$addErrors]));
+            die();
+        }
+        $model->addInCollection($_GET['imageId'], $_POST['collectionId'], $UID);
+        header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");
     }
 
     public function personalPageAction(){
@@ -81,21 +103,65 @@ class MainController{
         }
         $UID = $_SESSION['id'];
         $model = new CollectionModel();
-        $data = $model->getPersonalCollection($UID);
+        $data = $model->getAllUserCollection($UID);
         View::render(["page_view" => "collection", "layout" => "default", "data" => $data]);
         
+    }
+
+    public function collectionAction(){
+        Auth::login();
+        $UID = $_SESSION['id'];
+        if(isset($_GET['collectionId'])){
+            $imageModel = new ImageModel();
+            $collectionModel = new CollectionModel();
+            $imageData = $imageModel->getCollectionImage($UID, $_GET['collectionId']);
+            $currentCollectionData = $collectionModel->getOneCollection($_GET['collectionId']);
+            $colectionList = $collectionModel->getCollection($UID,  $_GET['collectionId']);
+            $collectionThree = $collectionModel->getChildrenCollection($_GET['collectionId']);
+            $data = [$currentCollectionData[0]['name'],$colectionList, $imageData, $collectionThree];
+            View::render(["page_view" => "collectionItem", "layout" => "default", "data" => $data]);
+        }
+        else{
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index"); 
+        }
+        
+    }
+
+    public function deleteImageAction(){
+        Auth::login();
+        $UID = $_SESSION['id'];
+        $model = new ImageModel();
+        $result = $model->getCollectionImage($UID, $_GET['collectionId']);
+        if(count($result) != 0)
+            $model->deleteCollectionImage($_GET['imageId'],$_GET['collectionId']);
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/collection&collectionId=".$_GET['collectionId']);
     }
 
     public function createCollectionAction(){
         if(Auth::login()){
             $UID = $_SESSION['id'];
-            CollectionModel::createCollection($_POST["collection_name"], $UID);
-            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/personalPage");
+            if(isset($_GET['collectionId'])){
+                CollectionModel::createCollection($UID, $_POST["collection_name"], $_GET['collectionId']);
+                header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/collection&collectionId=".$_GET['collectionId']."");
+                
+            }
+            if(!isset($_GET['collectionId'])){
+                CollectionModel::createCollection($UID, $_POST["collection_name"]);
+                header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/personalPage");
+            } 
         }
         else{
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/index");  
+        }      
+    }
+
+    public function deleteCollectionAction(){
+        if(Auth::login()){
+            $collectionModel = new CollectionModel();
+            $collectionModel->deleteCollection($_GET['collectionId']);
+            sleep(1);
+            header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/personalPage");
         }
-             
     }
 
     public function errorAction(){

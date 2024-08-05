@@ -71,14 +71,8 @@ class CollectionModel extends Model{
                             DELETE FROM image_collection WHERE collection_id = ".$collectionId.";
 
                             DELETE FROM `collection`
-                                    WHERE id = ".$collectionId.";   
-
-                            DELETE FROM collection_treepath
-                                    WHERE parent_id = ".$collectionId.";
-                                    
-                            DELETE FROM `collection`
                                     WHERE id IN (
-                                        SELECT `collection_treepath`.children_id FROM (
+                                        SELECT children_id FROM (
                                             SELECT children_id FROM `collection`
                                             JOIN collection_treepath ON `collection`.id = collection_treepath.children_id
                                             WHERE collection_treepath.parent_id = ".$collectionId."
@@ -91,9 +85,13 @@ class CollectionModel extends Model{
                                             SELECT children_id FROM `collection_treepath`
                                             WHERE parent_id = ".$collectionId."
                                         ) AS tmptable
-                                    );");
-                                    
-        
+                                    );
+                            DELETE FROM `collection`
+                                    WHERE id = ".$collectionId.";   
+
+                            DELETE FROM collection_treepath
+                                    WHERE parent_id = ".$collectionId."");
+                                
     }
 
     public function getChildrenCollection($collectionId){

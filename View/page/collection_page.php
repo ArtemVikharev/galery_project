@@ -1,3 +1,5 @@
+<?php require_once "Helper/CollectionThree.php";?>
+<?php $collectionList = CollectionThree::showCollection($data);?>
 <div class="page_title">
     <h2>Мои коллекции</h2>
 </div>
@@ -9,10 +11,7 @@
         <button>Создать коллекцию</button>
     </form>
 </div>
-<div class="collection_list">
-    <?php foreach ($data as $item) : ?>
-        <a href="?route=main/collection&id=<?echo $item['id'];?>">
-            <p><? echo $item['name']?></p>
-        </a>
-    <?php endforeach; ?>
+<div class="collection_list" >
+    <ul><? echo $collectionList; ?></ul>
 </div>
+

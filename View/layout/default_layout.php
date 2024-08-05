@@ -38,8 +38,7 @@
                     ?></p>
                           
                 </form>
-                <?}
-                    ?>
+                <?}?>
                 <?php if(isset($UID)){?>
                 <a href="/?route=main/personalPage"> Мои коллекции</a>
                 <a href="/?route=main/auth&action=out">Выход</a>

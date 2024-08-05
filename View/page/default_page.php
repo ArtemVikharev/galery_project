@@ -2,6 +2,16 @@
 <div>
     <h2>Главная страница</h2>
 </div>
+<div class="most_view">
+    <?php foreach ($data[0] as $item) : ?>
+    <div class="most_view_item">
+        <a href=<?php echo "?route=main/itemImage&imageId=".$item['id'].""?>>
+            <img src=<?php echo $item['path']?> alt="">
+        </a> 
+        <p>Количество просмотров:<?echo $item['view_count']?></p>
+    </div>
+    <?php endforeach; ?>
+</div>
 <div>
     <form class="image_list" method="POST" action="?route=main/addImage" enctype="multipart/form-data">
         <input type="file" name="userfile">
@@ -30,9 +40,10 @@
     </form>
 </div>
 <div class="image_block">
-    <?php foreach ($data as $item) : ?>
+    <?php foreach ($data[1] as $item): ?>
         <a href=<?php echo "?route=main/itemImage&imageId=".$item['id'].""?>>
             <img src=<?php echo $item['path']?> alt="">
         </a> 
+
     <?php endforeach; ?>
 </div>

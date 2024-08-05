@@ -71,4 +71,11 @@ class ImageModel extends Model{
         //                                 ) AS temptable
         // )", false);
     }
+
+    public function getMostView(){
+        $columns = Lib::convertListToString($this->columns);
+        $data = $this->db->query("SELECT ".$columns." FROM ".$this->table." ORDER BY  `image`.`view_count` DESC LIMIT 3");
+
+        return $data;
+    }
 }

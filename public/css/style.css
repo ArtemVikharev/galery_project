@@ -34,3 +34,16 @@ p{
     padding: 10px;
     width: 300px;
 }
+
+.most_view{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap; 
+}
+
+.most_view img{
+    padding: 10px;
+    width: 300px;
+}

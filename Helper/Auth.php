@@ -10,12 +10,11 @@ class Auth{
 
             $queryResult = $db-> query("SELECT * FROM user WHERE username='".$login."'");
             if (count($queryResult) == 1){
-                echo 1;
                 $result = $queryResult[0];
 
                 if (password_verify($password, $result['password'])){
                     setcookie ("login", $result['username'], time() + 360000);                         
-                    setcookie ("password", md5($result['username'].$result['password']), time() + 360000);                    
+                    setcookie ("hash", md5($result['username'].$result['fistname'].$result['email']), time() + 360000);                    
                     $_SESSION['id'] = $result['id'];  
                     $id = $_SESSION['id'];                   
                 return $error;          
@@ -43,9 +42,9 @@ class Auth{
         if (isset($_SESSION['id'])){                   
             if(isset($_COOKIE['login']) && isset($_COOKIE['password'])){
                 SetCookie("login", "", time() - 1, '/');
-                SetCookie("password","", time() - 1, '/');          
+                SetCookie("hash","", time() - 1, '/');          
                 setcookie ("login", $_COOKIE['login'], time() + 50000, '/');            
-                setcookie ("password", $_COOKIE['password'], time() + 50000, '/');          
+                setcookie ("hash", $_COOKIE['hash'], time() + 50000, '/');          
                 $id = $_SESSION['id'];                   
                 return true;
             }              
@@ -54,7 +53,7 @@ class Auth{
                 $result = $queryResult[0];             
                 if (count($queryResult) == 1){    
                     setcookie ("login", $result['login'], time()+50000, '/');              
-                    setcookie ("password", md5($result['login'].$result['password']), time() + 50000, '/'); 
+                    setcookie ("hash", md5($result['username'].$result['fistname'].$result['email']), time() + 50000, '/'); 
                     $id = $_SESSION['id'];
                     return true;            
                     }
@@ -68,7 +67,7 @@ class Auth{
                     $queryResult = $db->query("SELECT * FROM user WHERE username='".$_COOKIE['login']."'");
                     $result = $queryResult[0];
 
-                    if(count($queryResult) == 1 && md5($result['username'].$result['password']) == $_COOKIE['password']){ 
+                    if(count($queryResult) == 1 && md5($result['username'].$result['fistname'].$result['email']) == $_COOKIE['hash']){ 
                     $_SESSION['id'] = $result['id'];         
                     $id = $_SESSION['id'];              
              
@@ -76,7 +75,7 @@ class Auth{
                 }           
             else{         
                 SetCookie("login", "", time() - 360000, '/');               
-                SetCookie("password", "", time() - 360000, '/');                    
+                SetCookie("hash", "", time() - 360000, '/');                    
                 return false;           
                 }   
             }       
@@ -93,7 +92,7 @@ class Auth{
      
         unset($_SESSION['id']);  
         SetCookie("login", "");   
-        SetCookie("password", "");    
+        SetCookie("hash", "");    
         header('Location: http://'.$_SERVER['HTTP_HOST'].'/');
     }
 }   

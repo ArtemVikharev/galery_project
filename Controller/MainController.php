@@ -9,7 +9,9 @@ class MainController{
 
     public function indexAction(){
         $model = new ImageModel();
-        $data = $model->get();
+        $allImage = $model->get();
+        $mostViewImage = $model->getMostView();
+        $data = [$mostViewImage, $allImage];
         if (!$data || count($data) == 0) {
             header("location: http://" . $_SERVER["SERVER_NAME"] . "" . $_SERVER["SCRIPT_NAME"] . "?route=main/error");
         }

@@ -52,7 +52,7 @@ class Auth{
                 $queryResult = $db->query("SELECT * FROM user WHERE id='".$_SESSION['id']."'");
                 $result = $queryResult[0];             
                 if (count($queryResult) == 1){    
-                    setcookie ("login", $result['login'], time()+50000, '/');              
+                    setcookie ("login", $result['username'], time()+50000, '/');              
                     setcookie ("hash", md5($result['username'].$result['fistname'].$result['email']), time() + 50000, '/'); 
                     $id = $_SESSION['id'];
                     return true;            

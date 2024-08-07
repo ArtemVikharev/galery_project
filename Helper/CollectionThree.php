@@ -1,6 +1,4 @@
 <?
-
-
 class CollectionThree{
     public static function tplMenu($collection){
         $menu = '<li>
@@ -14,7 +12,6 @@ class CollectionThree{
         return $menu;
     }
     
-
     public static function showCollection($data){
         $string = '';
         foreach($data as $item){
@@ -32,7 +29,7 @@ class CollectionThree{
         }
 
         if(isset($collection['childrenCollection'])){
-            $i = 1;
+            $i= 1;
             for($j = 0; $j < $i; $j++){
                 $str .= '--';
             }
@@ -40,7 +37,6 @@ class CollectionThree{
 
             $menu .= self::showDropCollection($collection['childrenCollection'], $str);
         }
-
         return $menu;
     }
 

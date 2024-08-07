@@ -1,9 +1,8 @@
 <div class="image_item">
-    <img src="<?php echo $data[0][0]['path']?>" alt="">
+    <img src="<?php echo $data['image']['path']?>" alt="">
 </div>
-<? Debug::dd($data);?>
 <div class="btn_control">
-    <form class="add_btn" method="POST" action="?route=main/addInCollection&imageId=<?echo $data[0][0]['id']?>">
+    <form class="add_btn" method="POST" action="?route=main/addInCollection&imageId=<?echo $data['image']['id']?>">
         <label for="">Выберите коллекцию:
             <select name="collectionId">
                 <?php foreach ($data[1] as $item) : ?>

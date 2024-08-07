@@ -15,8 +15,9 @@ class Upload{
         $fileName = $fileNameCmps[0];
 
         $db = new DB;
-        $db->query("INSERT INTO 
+        $sql = "INSERT INTO 
         `image`(`name`, `format`, `path`) 
-            VALUES ('".$fileName."','".$fileExtension."','".$path."')", false);
+            VALUES ('".$fileName."','".$fileExtension."','".$path."')";
+        $db->query($sql, false);
         }
     }

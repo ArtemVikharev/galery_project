@@ -14,4 +14,3 @@
 <div class="collection_list" >
     <ul><? echo $collectionList; ?></ul>
 </div>
-

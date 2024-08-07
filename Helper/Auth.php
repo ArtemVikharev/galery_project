@@ -37,8 +37,8 @@ class Auth{
     }
 
     public static function login() {
-        $db = new DB();  
-        session_start();    
+        $db = new DB(); 
+        session_start();
         if (isset($_SESSION['id'])){                   
             if(isset($_COOKIE['login']) && isset($_COOKIE['password'])){
                 SetCookie("login", "", time() - 1, '/');
@@ -86,8 +86,7 @@ class Auth{
     }
 
     public static function out(){
-        $db = new DB();  
-        session_start();    
+        $db = new DB();    
         $id = $_SESSION['id'];              
      
         unset($_SESSION['id']);  

@@ -1,9 +1,13 @@
-
+<?php 
+    if(Auth::login()){   
+        $UID = $_SESSION['id'];
+    }
+?>
 <div>
     <h2>Главная страница</h2>
 </div>
 <div class="most_view">
-    <?php foreach ($data[0] as $item) : ?>
+    <?php foreach ($data['mostView'] as $item) : ?>
     <div class="most_view_item">
         <a href=<?php echo "?route=main/itemImage&imageId=".$item['id'].""?>>
             <img src=<?php echo $item['path']?> alt="">
@@ -15,24 +19,24 @@
 <div>
     <form class="image_list" method="POST" action="?route=main/addImage" enctype="multipart/form-data">
         <input type="file" name="userfile">
-        <p class =<?php echo (writeStatus("existFile") != false)? "error_msg": ""; ?>>
+        <p class =<?php echo (isset($data["errors"]["existFile"]) != false)? "error_msg": ""; ?>>
         <?php
-            if(writeStatus("existFile")){
-                echo writeStatus("existFile");
+            if(isset($data["errors"]["existFile"])){
+                echo $data["errors"]["existFile"];
             }
             
         ?></p>
-        <p class =<?php echo (writeStatus("imageFormat") != false)? "error_msg": ""; ?>>
+        <p class =<?php echo (isset($data["errors"]["imageFormat"]) != false)? "error_msg": ""; ?>>
         <?php
-            if(writeStatus("imageFormat")){
-                echo writeStatus("imageFormat");
+            if(isset($data["errors"]["imageFormat"])){
+                echo $data["errors"]["imageFormat"];
             }
             
         ?></p>
-        <p class =<?php echo (writeStatus("imageSize") != false)? "error_msg": ""; ?>>
+        <p class =<?php echo (isset($data["errors"]["imageSize"]) != false)? "error_msg": ""; ?>>
         <?php
-            if(writeStatus("imageSize")){
-                echo writeStatus("imageSize");
+            if(isset($data["errors"]["imageSize"])){
+                echo $data["errors"]["imageSize"];
             }
             
         ?></p>        
@@ -40,10 +44,9 @@
     </form>
 </div>
 <div class="image_block">
-    <?php foreach ($data[1] as $item): ?>
+    <?php foreach ($data['images'] as $item): ?>
         <a href=<?php echo "?route=main/itemImage&imageId=".$item['id'].""?>>
             <img src=<?php echo $item['path']?> alt="">
         </a> 
-
     <?php endforeach; ?>
 </div>

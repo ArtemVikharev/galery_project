@@ -4,6 +4,9 @@ require_once "vendor/DB.php";
 
 
 class User{
+    private $table = "user";
+    private $columns = ['fistname', 'surname', 'username', 'email', 'password'];
+
     protected $firstname = null;
     protected $surename = null;
     protected $username = null;
@@ -21,9 +24,13 @@ class User{
     
     public function registerUser(){
         $this->db = new DB;
-        $this->db->query("INSERT INTO 
-                                `User`(`fistname`, `surname`, `username`, `email`, `password`) 
-                            VALUES ('".$this->firstname."','".$this->surename."','".$this->username."','".$this->email."','".$this->password."')", false);
+        $columns = Lib::convertListToString($this->columns);
+        $sql = "INSERT 
+                    INTO 
+                        ".$this->table."(".$columns.")
+                    VALUES 
+                        ('".$this->firstname."','".$this->surename."','".$this->username."','".$this->email."','".$this->password."')";
+        $this->db->query($sql, false);
     }
 
 }

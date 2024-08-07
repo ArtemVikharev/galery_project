@@ -1,7 +1,7 @@
-<?php if (Auth::login()){   
+<?php
+    if(Auth::login()){   
         $UID = $_SESSION['id'];
     }
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +30,10 @@
                         <input type="password" name="password">
                     </label>
                     <input type="submit" name="log_in" value="Войти">
-                    <p class =<?php echo (writeStatus("auth_error") != false)? "error_msg": ""; ?>>
+                    <p class =<?php echo (isset($data['errors']["auth_error"]) != false)? "error_msg": ""; ?>>
                     <?php
-                        if(writeStatus("auth_error")){
-                            echo writeStatus("auth_error");
+                        if(isset($data['errors']["auth_error"])){
+                            echo $data['errors']["auth_error"];
                         }
                     ?></p>
                           
@@ -50,38 +50,3 @@
 </body>
 </html>
 
-
-<?php
-function writeStatus($nameField){
-	if(isset($_GET['status'])){
-
-		$data = $_GET['status'];
-
-		$data = json_decode($data);
-
-		$error = (array)$data[0];
-		
-		if(isset($error[$nameField])){
-			return $error[$nameField];
-		}
-	}
-    
-	return false;
-}
-
-function setValue($nameField){
-    if(isset($_GET['status'])){
-
-        $data = $_GET['status'];
-
-        $data = json_decode($data);
-
-        $value = (array)$data[1];
-        
-        if(isset($value[$nameField])){
-            return $value[$nameField];
-        }
-    }
-    return false;
-}
-?>
